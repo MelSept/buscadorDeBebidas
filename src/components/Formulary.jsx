@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col, Alert } from "react-bootstrap";
 import useCategories from "../hooks/useCategories";
 
 const Formulary = () => {
@@ -8,16 +8,29 @@ const Formulary = () => {
     categoria: "",
   });
 
+  const [alerts, setAlerts] = useState("");
+
   const { categories } = useCategories();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.values(busqueda).includes(""))
+    //alerta para que los campos obligatorios no queden vacios
+
+    if (Object.values(search).includes("")) {
+      setAlerts("Todos los campos son obligatorios");
+      return;
+    }
+    setAlerts("");
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      {alerts && (
+        <Alert variant="danger" className="text-center">
+          {alerts}
+        </Alert>
+      )}
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
@@ -58,7 +71,11 @@ const Formulary = () => {
       </Row>
       <Row className="justify-content-end">
         <Col md={3}>
-          <Button variant="danger" className="text-uppercase w-100">
+          <Button
+            variant="danger"
+            className="text-uppercase w-100"
+            type="submit"
+          >
             Buscar Bebidas
           </Button>
         </Col>
