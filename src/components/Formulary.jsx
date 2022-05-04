@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Button, Form, Row, Col, Alert } from "react-bootstrap";
 import useCategories from "../hooks/useCategories";
+import useDrinks from "../hooks/useDrinks";
 
 const Formulary = () => {
   const [search, setSearch] = useState({
-    nombre: "",
-    categoria: "",
+    name: "",
+    category: "",
   });
 
   const [alerts, setAlerts] = useState("");
 
   const { categories } = useCategories();
+
+  const { consultDrinks } = useDrinks();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +25,8 @@ const Formulary = () => {
       return;
     }
     setAlerts("");
+    //consulta la busqueda de bebidas
+    consultDrinks(search);
   };
 
   return (
@@ -31,16 +36,17 @@ const Formulary = () => {
           {alerts}
         </Alert>
       )}
+
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="nombre">Nombre Bebida</Form.Label>
+            <Form.Label htmlFor="name">Nombre Bebida</Form.Label>
             <Form.Control
-              id="nombre"
+              id="name"
               type="text"
               placeholder="Ej: Tequila, Vodka, etc"
-              name="nombre"
-              value={search.nombre}
+              name="name"
+              value={search.name}
               onChange={(e) =>
                 setSearch({ ...search, [e.target.name]: e.target.value })
               }
@@ -53,7 +59,7 @@ const Formulary = () => {
             <Form.Select
               id="category"
               name="category"
-              value={search.categoria}
+              value={search.category}
               onChange={(e) =>
                 setSearch({ ...search, [e.target.name]: e.target.value })
               }
